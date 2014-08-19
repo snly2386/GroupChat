@@ -1,0 +1,158 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @room.name %>
+</p>
+
+<%= link_to 'Edit', edit_room_path(@room) %> |
+<%= link_to 'Back', rooms_path %>
+
+ <h1>Video Conference</h1>
+    <div id="myPublisherDiv"></div>
+
+
+    <div id="chatBox">
+
+          <div id="publisher_container">
+              <div id="publisher_replace"></div>
+          </div>
+
+          <div id="subscriber_container">
+            <div id="subscriber_replace" ></div>
+          </div>
+    </div>
+
+    <div class="textbox" id="textbox">
+
+    </div>
+
+    <textarea class="chat"></textarea>
+    <button class="submit">Submit</button>
+
+     <script type="text/javascript">
+      // Initialize API key, session, and token...
+      // Think of a session as a room, and a token as the key to get in to the room
+      // Sessions and tokens are generated on your server and passed down to the client
+      var secret = "19b7620096a6087954bde0d131b7207e079ba419"
+      var apiKey = "44949522";
+      var sessionId = '<%=@room.session_id%>';
+      var token = '<%=@token%>';
+      
+       // var secret2 = "<%=@api_secret%>";
+       // var apiKey2 = "<%=@api_key%>";
+       // var token2 = "<%=@token%>" ;
+       // var sessionId2 = "<%=@room.session_id%>";
+
+
+    
+        var session = OT.initSession(apiKey, sessionId)
+       
+        var colors = ['blue','pink','orange','red',"stop"]
+        var counter = 0;
+
+        session.on("sessionConnected", sessionConnectedHandler);
+        session.on("streamCreated", streamCreatedHandler);
+        session.on("streamDestroyed", streamDestroyedHandler);
+        session.on('signal', function(event){
+          console.log("Signal sent from: " + event.from.id);
+         if(counter == colors.length-1){
+          counter = 0;
+         } else {
+          $('.textbox').append('<p class="text" style="color:">' + '<span class="color">' + event.from.id + '</span>' + ": " + event.data + '</p>');
+          $('.chat').val('');  
+          counter++;
+        }
+        })
+        session.connect(token);
+
+        //chat test
+        $('.submit').on('click', function(e){
+            
+
+        session.signal({
+          data: $('.chat').val()
+
+        },
+          function(error){
+            if(error){
+              console.log('signal error:'+ error.reason);
+            }else{
+              console.log('signal sent');
+            }
+          }
+        )
+        })
+      
+
+        function sessionConnectedHandler(event) {
+           subscribeToStreams(event.streams);
+           publisher = OT.initPublisher(apiKey, "publisher_replace", {position: 'absolute',
+            width: 350, height: 200, wmode: "window"});
+            session.publish(publisher);
+            publisher.publishAudio(true);
+        }
+
+        function streamCreatedHandler(event) {
+          var newDiv = document.createElement("div");
+          newDiv.id = "subscriber_replace" + event.stream.streamId; 
+          document.getElementById("subscriber_container").appendChild(newDiv);
+          subscriber = session.subscribe(event.stream, newDiv.id, {width: 350, height: 200});
+          
+         }
+
+        function subscribeToStreams(streams) {
+            for (var i = 0; i < streams.length; i++) {
+              var stream = streams[i];
+
+              if (stream.connection.connectionId != session.connection.connectionId) {
+                var newDiv = document.createElement("div");
+                newDiv.id = "subscriber_replace";
+                document.getElementById("subscriber_container").appendChild(newDiv);
+                subscriber = session.subscribe(stream, "subscriber_replace", {width: 350, height: 200});
+                subscriber.subscribeToAudio(true);
+                subscriber.setAudioVolume(100);
+              }
+                alert("Someone has joined the room");
+            } 
+          }
+
+        function streamDestroyedHandler(event) {
+            for (var i = 0; i < event.streams.length; i++) {
+                var stream = event.streams[i];
+                alert("Stream " + stream.name + " ended. " + event.reason); 
+                unsubscribe(stream);
+            }
+        }
+
+
+        function unsubscribe(stream) {
+          var subscribers = session.getSubscribersForStream(stream);
+          for (var i = 0; i < subscribers.length; i++) {
+            session.unsubscribe(subscribers[i]);
+            alert("Someone has left the room");
+          }
+        }
+          
+        function updateScroll(){
+            var element = document.getElementById("textbox");
+            element.scrollTop = element.scrollHeight;
+        }
+
+        setInterval("updateScroll",1000);
+                  
+
+           
+           //from here------
+           
+           // var session = OT.initSession(apiKey,sessionId );
+
+           // session.on("streamCreated", function(event) {
+           //   session.subscribe(event.stream);
+           // });
+
+           // session.connect(token, function(error) {
+           //   var publisher = OT.initPublisher();
+           //   session.publish(publisher);
+           // });
+          </script>
