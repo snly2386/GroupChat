@@ -1,0 +1,188 @@
+<section class="background"></section>
+
+<section class="test"><div class="icon"></div></section>
+
+<section class="chat-icon">
+	<img src="assets/comment32.png"/>
+</section>
+
+<section class="title centered">
+	<p> </p>
+</section>
+
+<section class="menu-container">
+	<div class="menu">
+		<div class="row home">
+			<div class="image"><img src=""/></div>
+			<div class="row-title"><p>Home</p></div>
+		</div>
+		<div class="row find">
+			<div class="image"><img src=""/></div>
+			<div class="row-title"><p>Find Room</p></div>
+		</div>
+		<div class="row">
+			<div class="image"><img src=""/></div>
+			<div class="row-title"><p>Placeholder</p></div>
+		</div>
+		<div class="row">
+			<div class="image"><img src=""/></div>
+			<div class="row-title"><p>Placeholder</p></div>
+		</div>
+	</div>
+</section>
+
+<section class="home-display-container">
+	<div class="home-display">
+		<div class="home-display-icon centered"><img src="assets/hotel17.png"/></div>
+		<p>HOME</p>
+	</div>
+</section>
+
+<section class="find-display-container">
+	<div class="find-display">
+		<div class="find-display-icon centered"><img src="assets/search19.png"/></div>
+		<p>FIND A ROOM</p>
+	</div>
+</section>
+
+<div class='opentok' data-session='' data-token=''></div>
+<div id="myPublisherDiv"></div>
+<div id="chatBox">
+  <div id="publisher_container" class= "centered">
+      <div id="publisher_replace"></div>
+  </div>
+
+  <div id="subscriber_container" class="centered">
+    <div id="subscriber_replace" ></div>
+  </div>
+</div>
+
+<section class="chat-container">
+	<div class="chat centered"></div>
+	<div class="input centered">
+		<input type="text" placeholder="Type Shit Here"></input>
+		<div class="submit"><p>SUBMIT</p></div>
+	</div>
+</section>
+
+<script type="text/javascript">
+	  var secret = "5df20d550220b4bee6d90a89c28a1d0a0fdab646"
+      var apiKey = "45039532";
+      var sessionId = "1_MX40NTAzOTUzMn5-MTQxNDI2MDQ5NjQ5OX41d1dCTXU1YWdNa09kMDBySlpYWFNEc3Z-fg "
+      var token = "T1==cGFydG5lcl9pZD00NTAzOTUzMiZzaWc9MjNjNDg4YmRlN2ZkODU1OGQyYjY1YjMyZjBjMTE5ZjU0NzBjZGIyMTpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UQXpPVFV6TW41LU1UUXhOREkyTURRNU5qUTVPWDQxZDFkQ1RYVTFZV2ROYTA5a01EQnlTbHBZV0ZORWMzWi1mZyZjcmVhdGVfdGltZT0xNDE0Mzc1MjM5Jm5vbmNlPTAuNDcyNTQ5NjgyNTY3NzQ2MSZjb25uZWN0aW9uX2RhdGE9 "
+      var session = ""
+
+      function set_credentials(){
+		   sessionId = $('.opentok').data('session');
+		   token = $('.opentok').data('token');
+		   init_session()
+      }
+
+      function init_session(){
+         session = OT.initSession(apiKey, sessionId)
+         session.on("sessionConnected", sessionConnectedHandler);
+         session.on("streamCreated", streamCreatedHandler);
+         session.on("streamDestroyed", streamDestroyedHandler);
+         session.on('signal', signalHandler);
+         session.connect(token);
+      	
+      }
+    
+       
+        var colors = ['blue','pink','orange','red',"stop"]
+        var counter = 0;
+
+        function signalHandler(event){
+          console.log("Signal sent from: " + event.from.id);
+       	  	 event.from.data = "fag"
+          if(counter == colors.length-1){
+         	 counter = 0;
+           } else {
+          	$('.chat').append('<p class="text" style="display: none">' + '<span class="color">' + event.from.data + '</span>' + ": " + event.data + '</p>')
+          	$('.chat p').fadeIn(1000)
+          	$('.input input').val('');  
+       	  	 counter++;
+       	  	 console.log(event.from.data)
+       	   }
+         }
+
+        //chat test
+        $('.submit').on('click', function(e){
+            
+
+        session.signal({
+          data: $('.input input').val()
+
+        },
+          function(error){
+            if(error){
+              console.log('signal error:'+ error.reason);
+            }else{
+              console.log('signal sent');
+            }
+          }
+        )
+        })
+      
+
+        function sessionConnectedHandler(event) {
+           subscribeToStreams(event.streams);
+           publisher = OT.initPublisher(apiKey, "publisher_replace", {position: 'absolute',
+            width: 350, height: 200, wmode: "window"});
+            session.publish(publisher);
+            publisher.publishAudio(true);
+            $('#publisher_container').css('border', '5px solid rgb(229, 170, 224)')
+        }
+
+        function streamCreatedHandler(event) {
+          var newDiv = document.createElement("div");
+          newDiv.id = "subscriber_replace" + event.stream.streamId; 
+          document.getElementById("subscriber_container").appendChild(newDiv);
+          subscriber = session.subscribe(event.stream, newDiv.id, {width: 350, height: 200});
+          // $("#subscriber_replace").css('border', '5px solid rgb(120, 168, 242)')
+          
+         }
+
+        function subscribeToStreams(streams) {
+            for (var i = 0; i < streams.length; i++) {
+              var stream = streams[i];
+
+              if (stream.connection.connectionId != session.connection.connectionId) {
+                var newDiv = document.createElement("div");
+                newDiv.id = "subscriber_replace";
+                document.getElementById("subscriber_container").appendChild(newDiv);
+                subscriber = session.subscribe(stream, "subscriber_replace", {width: 350, height: 200});
+                subscriber.subscribeToAudio(true);
+                subscriber.setAudioVolume(100);
+                // $("#subscriber_replace").css('border', '5px solid rgb(120, 168, 242)')
+              }
+                alert("Someone has joined the room");
+            } 
+          }
+
+        function streamDestroyedHandler(event) {
+            for (var i = 0; i < event.streams.length; i++) {
+                var stream = event.streams[i];
+                alert("Stream " + stream.name + " ended. " + event.reason); 
+                unsubscribe(stream);
+            }
+            // $("#subscriber_replace").css('border', 'none')
+        }
+
+
+        function unsubscribe(stream) {
+          var subscribers = session.getSubscribersForStream(stream);
+          for (var i = 0; i < subscribers.length; i++) {
+            session.unsubscribe(subscribers[i]);
+            alert("Someone has left the room");
+          }
+          // $("#subscriber_replace").css('border', 'none')
+        }
+
+         function updateScroll(){
+            var element = document.getElementById("textbox");
+            element.scrollTop = element.scrollHeight;
+        }
+
+        setInterval("updateScroll",1000);
+</script>

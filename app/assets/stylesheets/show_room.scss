@@ -1,0 +1,189 @@
+.show_room{
+	.background{
+		z-index: -9999;
+		color: transparent;
+		opacity: 0.5;
+		width: 100%;
+		position: fixed;
+		top: 0px;
+		bottom: 0px;
+		background-size: 100% 100%;
+		background-image: url('/assets/landscape3.jpg')
+	}
+	.menu-icon-container{
+		.menu-icon{
+			cursor: pointer;
+			margin-top: -40px;
+			float: right;
+			img { width: 60px;}
+		}
+	}
+	.test{
+		margin-top: -20px;
+		float: right;
+		margin-right: 50px;
+		.icon, .icon:before, .icon:after{
+		  cursor: pointer;
+		  border-radius: 1px;
+		  height: 5px;
+		  width: 35px;
+		  background: white;
+		  position: absolute;
+		  display: block;
+		  content: '';
+	     }
+		.icon:before{
+			top: -10px;
+		}
+		.icon:after{
+			bottom: -10px;
+		}
+		.icon, .icon:before, .icon:after{
+			transition: all 500ms ease-in-out;
+		}
+		.icon.active {
+			background-color: transparent;
+		}
+		.icon.active:before, .icon.active:after{
+			top: 0;
+		}
+		.icon.active:before{
+			transform: rotate(45deg);
+		}
+		.icon.active:after{
+			transform: rotate(-45deg);
+		}
+	}
+	.chat-icon{
+		cursor: pointer;
+		position: absolute;
+		top: 25px;
+		width: 10%;
+		img { width: 60px;}
+	}
+	.title{
+		text-align: center;
+		color: white;
+		font-size: 4em;
+	}
+	.menu-container{
+		z-index: 9999;
+		display: none;
+		background-color: rgb(240, 193, 91);
+		position: fixed;
+		top: 70px;
+		bottom: 0px;
+		width: 200px;
+		right: 0px;
+		.menu{
+			text-align: center;
+			float: right;
+			width: 200px;
+			.row{
+				cursor: pointer;
+				border: 1px solid white;
+				color: white;
+				height: 80px;
+				font-size: 1.3em;
+				.image {
+					img{ width: 60px; margin-top: 18px;}
+				}
+				.row-title{
+					p{margin-top: 5px;}
+				}
+			}
+		}
+	}
+	.home-display-container{
+		z-index: 8888;
+		position: absolute;
+		width: 100%;
+		top: 30%;
+		.home-display{
+			display: none;
+			border-radius: 5px;
+			text-align: center;
+			background-color: rgb(197, 112, 112);
+			max-width: 500px;
+			.home-display-icon{
+				width: 30%;
+				img { width: 100px; margin-top: 10px;}
+			}
+			p{ font-size: 3em;}
+		}
+	}
+	.find-display-container{
+		z-index: 8888;
+		position: absolute;
+		width: 100%;
+		top: 30%;
+		.find-display{
+			display: none;
+			border-radius: 5px;
+			text-align: center;
+			background-color: #D06BC3;
+			max-width: 500px;
+			.find-display-icon{
+				width: 30%;
+				img { width: 100px; margin-top: 10px;}
+			}
+			p{ font-size: 3em;}
+		}
+	}
+	.hover{
+		background-color: white !important;
+		color: black !important;
+	}
+	#chatBox{
+		#publisher_container{
+			width: 350px;
+			// border: 5px solid rgb(229, 170, 224);
+			#publisher_replace{
+
+			}
+		}
+		#subscriber_container{
+			width: 350px;
+			// border: 5px solid rgb(120, 168, 242);
+		}
+		#subscriber_replace{
+			// float: left;
+		}
+	}
+	.chat-container{
+		display: none;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		.chat{
+			border: 5px solid white;
+			color: white;
+			max-width: 500px;
+			height: 200px;
+			overflow-y: auto;
+			background-color: rgb(66, 103, 160);
+			p{ padding-left: 3px;}
+		}	
+		.input{
+			max-width:506px ;
+			input{ height: 40px; width: 69%; font-size: 1.3em; float: left; background-color: gray; color: white;}
+			input:focus{outline: 0;}
+			.submit{ 
+				cursor: pointer;
+				height: 43px;
+				color: white;
+				background-color: black;
+				float: left;
+				text-align: center;
+				width: 30%;
+			}
+			.submit:hover{
+				background-color: rgb(219, 86, 112);
+
+			}
+		}
+	}
+	.mousedown{
+		background-color: rgb(110, 202, 56) !important;
+	}
+}

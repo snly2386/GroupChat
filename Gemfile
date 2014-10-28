@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+gem 'ejs'
+gem 'rabl'
+gem 'oj'
 gem 'devise'
 gem 'dotenv-rails', :groups => [:development, :test]
 gem "opentok", "~> 2.2"
@@ -16,8 +19,10 @@ gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
+gem 'better_errors'
+gem "binding_of_caller"
+
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

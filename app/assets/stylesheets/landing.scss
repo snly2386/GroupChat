@@ -1,0 +1,201 @@
+.landing{
+	.main-container{
+		z-index: -9999;
+		color: transparent;
+		opacity: 0.5;
+		width: 100%;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		background-size: 100% 100%;
+		background-image: url('/assets/landscape.jpg')
+	}
+	.title-container{
+		max-width: 430px;
+		text-align: center;
+		color: white;
+		font-size: 6em;
+		p { width: 100%; }
+	}
+	.sign-in-container{
+		cursor: pointer;
+		text-align: center;
+		max-width: 140px;
+		color: white;
+		border: 4px solid white;
+		p { text-decoration: none; color: white; font-weight: bold; font-size: 1.5em;}
+	}
+	.sign-in-container:hover{
+		border:4px solid pink;
+	}
+	.menu-container{
+		cursor: pointer;
+		z-index: 200;
+		position: absolute;
+		top: 300px;
+		width: 100%;
+		.menu{
+			text-align: center;
+			color: white;
+			width: 600px;
+			.find-room{
+				display: none;
+				height: 144px;
+				position: relative;
+				background-color: rgb(223, 86, 164);
+				border: 4px solid white;
+				float: left;
+				width: 48%;
+				.icon{
+					z-index: 100;
+					margin-top: 10px;
+					width:40%;
+					img{ width: 100%;}
+				}
+				p{}
+			}
+			.create-room{
+				display: none;
+				height: 144px;
+				position: relative;
+				z-index: 300;
+				background-color: rgb(146, 82, 226);
+				border: 4px solid white;
+				float: left;
+				width: 48%;
+				.icon{
+					margin-top: 10px;
+					width: 40%;
+					img{ width: 100%;}
+				}
+			}
+		}
+	}
+	.create-input-container{
+		position: absolute;
+		width: 100%;
+		top: 150px;
+		.create-input-top{
+			position: relative;
+			z-index: 500;
+			display: none;
+			color: white;
+			background-color: rgb(86, 184, 219);
+			width: 288px;
+			text-align: center;
+			height: 144px;
+			border: 4px solid white;
+			.image{
+				margin-top: 10px;
+				width: 75px;
+				img { width: 100%;}
+			}
+			p{ font-size: 2em;}
+		}
+		.create-input-middle{
+			display: none;
+			height: 144px;
+			position: relative;
+			z-index: 500;
+			text-align: center;
+			max-width: 600px;
+			color: white;
+			.create-middle{
+				border: 4px solid white;
+				width: 48%;
+				float: left;
+				height: 144px;
+				background-color: blue;
+				.image{
+					margin-top: 10px;
+					width: 75px;
+					img { width: 100%;}
+				}
+				p{ font-size: 2em;}
+			}
+			.left{
+				background-color: rgb(98, 98, 249);
+			}
+			.right{
+				background-color: #E791B5;
+			}
+		}
+		.create-input-bottom{
+			position: relative;
+			z-index: 500;
+			display: none;
+			margin-top: 7px;
+			background-color: rgb(219, 79, 218);
+			width: 288px;
+			height: 144px;
+			border: 4px solid white;
+			.down-arrow{
+				cursor: pointer;
+				margin-top: 10px;
+				width: 60px;
+				img { width: 100%;}
+			}
+			input{
+				margin-top: 30px;
+				font-size: 1.5em;
+				width: 80%;
+				height: 40px;
+				border: 4px solid black;
+			}
+		}
+	}
+	.overlay{
+		display: none;
+		width: 100%;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		background-color: rgba(211, 76, 215, 0.42);
+		.close{
+			margin-top: 15px;
+			float: right;
+			width: 50px;
+			img { width: 100%; }
+		}
+	}
+	.transform{
+		transform: rotate(180deg);
+		-webkit-transition: -webkit-transform 0.5s ease-in-out;
+	}
+	.loading-overlay{
+		position: absolute;
+		width: 100%;
+		top: 30%;
+		z-index: 9999;
+		.circle-container{
+			width: 386px;
+			.circle{
+				// width: 100px;
+			}
+		}
+	}
+	.black-overlay{
+		z-index: 9989;
+		display: none;
+		position:absolute;
+		width: 100%;
+		top: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.59);
+	}
+	@media screen and (max-width:590px){
+		.menu{
+			width: 400px !important;
+			.find-room{
+				height: 165px !important;
+				width: 100% !important;
+				float: none !important;
+			}
+			.create-room{
+				height: 165px !important;
+				width: 100% !important;
+				float: none !important;
+			}
+		}
+	}
+}

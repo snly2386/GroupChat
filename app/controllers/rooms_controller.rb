@@ -16,9 +16,13 @@ class RoomsController < ApplicationController
     # @opentok = OpenTok::OpenTok.new @api_key, @api_secret
     @api_key = ENV['API_KEY']
     @api_secret = ENV['API_SECRET']
-    @opentok = @opentok = OpenTok::OpenTok.new @api_key, @api_secret
+    @opentok = OpenTok::OpenTok.new @api_key, @api_secret
     @room = Room.find(params[:id])
     @token = @opentok.generate_token(@room.session_id, {:role => :publisher, :data => ''})
+
+    respond_to do |format|
+      format.json { render json: {:room => @room, :token => @token}}
+    end
   end
 
   # GET /rooms/new
@@ -33,13 +37,15 @@ class RoomsController < ApplicationController
   # POST /rooms
   # POST /rooms.json
   def create
+    #raise Exception
     @api_key = ENV['API_KEY']
     @api_secret = ENV['API_SECRET']
     @room = Room.create(room_params)
-    @opentok = @opentok = OpenTok::OpenTok.new @api_key, @api_secret
+    @opentok = OpenTok::OpenTok.new @api_key, @api_secret
     @session = @opentok.create_session
     @room.session_id = @session.session_id
     @room.save
+    # @room = Room.new(room_params)
 
     # redirect_to "/rooms/#{@room.id}"
 
